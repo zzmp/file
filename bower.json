@@ -1,0 +1,30 @@
+{
+  "name": "ng-file",
+  "main": "file.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/zzmp/file",
+  "authors": [
+    "zzmp <zmp@umich.edu>"
+  ],
+  "description": "The File API, the Angular way.",
+  "keywords": [
+    "angular",
+    "ng",
+    "file",
+    "reader",
+    "picker",
+    "dragger"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/lib",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.2.21"
+  }
+}

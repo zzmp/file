@@ -1,0 +1,41 @@
+{
+  "name": "ng-file",
+  "version": "0.0.0",
+  "description": "The File API, the Angular way.",
+  "main": "file.js",
+  "scripts": {
+    "postinstall": "bower i",
+    "test": "npm i && gulp",
+    "prepublish": "gulp build; git add -f ./index.js ./index.min.js; git commit --amend --no-edit; git push -f origin master"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zzmp/file.git"
+  },
+  "keywords": [
+    "angular",
+    "ng",
+    "file",
+    "reader",
+    "picker",
+    "dragger"
+  ],
+  "author": "Zach Pomerantz <zmp@umich.edu> (http://garabagne.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zzmp/file/issues"
+  },
+  "homepage": "https://github.com/zzmp/file",
+  "devDependencies": {
+    "bower": "^1.3.9",
+    "gulp": "^3.8.7",
+    "gulp-concat": "^2.3.4",
+    "gulp-jshint": "^1.8.4",
+    "gulp-mocha": "^0.5.2",
+    "gulp-ng-annotate": "^0.3.0",
+    "gulp-notify": "^1.4.2",
+    "gulp-uglify": "^0.3.1",
+    "jshint-stylish": "^0.4.0",
+    "shelljs": "^0.3.0"
+  }
+}
