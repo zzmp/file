@@ -1,13 +1,17 @@
-var bower     = require('./bower.json'),
-    sh        = require('shelljs'),
-    gulp      = require('gulp'),
-    notify    = require('gulp-notify'),
-    jshint    = require('gulp-jshint'),
-    stylish   = require('jshint-stylish'),
-    mocha     = require('gulp-mocha'),
-    annotate  = require('gulp-ng-annotate'),
-    concat    = require('gulp-concat'),
-    uglify    = require('gulp-uglify');
+var bower    = require('./bower.json'),
+    sh       = require('shelljs'),
+    gulp     = require('gulp'),
+    notify   = require('gulp-notify'),
+    jshint   = require('gulp-jshint'),
+    stylish  = require('jshint-stylish'),
+    mocha    = require('gulp-mocha'),
+    annotate = require('gulp-ng-annotate'),
+    concat   = require('gulp-concat'),
+    uglify   = require('gulp-uglify'),
+    sequence = require('run-sequence'),
+    express  = require('express'),
+    open     = require('open'),
+    app      = express();
 
 var dependencies = [];
 
@@ -61,9 +65,24 @@ gulp.task('build', function() {
 
 // watch all for changes
 gulp.task('watch', function () {
-  gulp.watch(paths.src, ['lint', 'test']);
+  gulp.watch(paths.src, ['lint', 'test', 'build']);
   gulp.watch(paths.tests, ['test']);
+});
+
+// serve a demonstration (used by mock)
+gulp.task('serve', function() {
+  app.use(express.static('./tests'));
+  app.use(express.static('.'));
+  app.listen(9000);
+
+  open('http://0.0.0.0:9000');
 });
 
 // kick it all off
 gulp.task('default', ['lint', 'test', 'watch']);
+
+// serve a mock
+gulp.task('mock', function(done) {
+  sequence('build', ['serve', 'watch'], done);
+});
+
