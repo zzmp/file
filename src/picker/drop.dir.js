@@ -1,7 +1,7 @@
 angular.module('file')
-  .directive('file-drop', ['$window', function($window) {
+  .directive('fileDrop', ['$window', function($window) {
     return {
-      require: '^file-picker',
+      require: '^filePicker',
       restrict: 'E',
       scope: {
         area: '&'
@@ -18,7 +18,7 @@ angular.module('file')
         area.on('dragover', dragOver);
         area.on('drop', ctrl.select);
 
-        scope.on('$destroy', function() {
+        scope.$on('$destroy', function() {
           area.off('dragover', dragOver);
           area.off('drop', ctrl.select);
         });

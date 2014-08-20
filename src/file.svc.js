@@ -8,20 +8,22 @@ var fileProvider = function() {
 
     function pick() {
       var files = $q.defer();
+      var deregister = {};
+
       var fileCancel = function() {
         files.reject();
-        $rootScope.$off('file:picker:canceled', fileCancel);  
+        deregister.cancel();
       };
-      var fileReceive = function(e, files) {
-        files.resolve(files);
-        $rootScope.$off('file:reader:received', fileReceive);
+      var fileReceive = function(e, fileList) {
+        files.resolve(fileList);
+        deregister.receive();
       };
 
 
       picker.pick();
       // TODO: Emit this event
-      $rootScope.$on('file:picker:canceled', fileCancel);
-      $rootScope.$on('file:reader:received', fileReceive);
+      deregister.cancel = $rootScope.$on('file:picker:canceled', fileCancel);
+      deregister.receive = $rootScope.$on('file:reader:received', fileReceive);
 
       return files.promise;
     }

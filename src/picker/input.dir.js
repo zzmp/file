@@ -1,7 +1,7 @@
 angular.module('file')
-  .directive('file-input', [function($window) {
+  .directive('fileInput', [function($window) {
     return {
-      require: '^file-picker',
+      require: '^filePicker',
       restrict: 'E',
       scope: {
         'accept': '='

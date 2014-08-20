@@ -22,7 +22,7 @@ var filePickerDirective = function(reader) {
       var classes = ["file-picker"];
       if (typeof attrs.drop === 'string')
         classes.push('drop');
-      if (attrs.modal)
+      if (typeof attrs.modal === 'string')
         classes.push('modal');
       if (attrs.logo)
         classes.push('branded');
@@ -47,7 +47,7 @@ var filePickerDirective = function(reader) {
       /* TODO: if (attrs.integrations)
         input.push('<file-integrations include="' + attrs.integrations + '">'); */
       input.push('</span></div>');
-      var progress = attrs.progress ? '<div><file-progress></file-progress></div>' : '';
+      var progress = typeof attrs.progress === 'string' ? '<div><file-progress></file-progress></div>' : '';
 
       return [div.join(''), drop.join(''), input.join(''), progress, '</div>'].join('\n');
 
@@ -66,7 +66,7 @@ var filePickerDirective = function(reader) {
        *   <div><file-progress /></div>
        * </div>                                                     */
     },
-    controllerAs: 'file-picker',
+    controllerAs: 'filePicker',
     controller: function($scope) {
       var that = this;
       var el;
