@@ -50,7 +50,8 @@ gulp.task('build', function() {
   // concatenate
     .pipe(concat('index.js'))
   // annotate dependency injections
-    .pipe(annotate({ add: true, single_quotes: true }))
+    /* TODO: Enable ngAnnotate when it supports @ngNoInject tags
+    .pipe(annotate({ add: true, single_quotes: true })) */
     .pipe(gulp.dest('.'))
   // minify
     .pipe(concat('index.min.js'))
