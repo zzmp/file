@@ -10,20 +10,33 @@ var fileProvider = function() {
       var files = $q.defer();
       var deregister = {};
 
-      var fileCancel = function() {
+      var fileCancel = function(e) {
         files.reject();
         deregister.cancel();
-      };
-      var fileReceive = function(e, fileList) {
-        files.resolve(fileList);
         deregister.receive();
+        deregister.complete();
+      };
+      var fileReceive = function(e, data, name, file) {
+        files.notify({
+          data: data,
+          name: name,
+          file: file
+        });
+      };
+      var fileComplete = function(e, log) {
+        files.resolve(log);
+        deregister.cancel();
+        deregister.receive();
+        deregister.complete();
       };
 
 
       picker.pick();
+      // TODO: Only deregister once all files are read (edge case: multiple files)
       // TODO: Emit this event
       deregister.cancel = $rootScope.$on('file:picker:canceled', fileCancel);
       deregister.receive = $rootScope.$on('file:reader:received', fileReceive);
+      deregister.complete = $rootScope.$on('file:reader:complete', fileComplete);
 
       return files.promise;
     }

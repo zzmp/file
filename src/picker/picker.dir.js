@@ -97,7 +97,7 @@ var filePickerDirective = function(reader) {
           files.push(file);
         });
 
-        reader.cache(files);
+        reader.load(files);
         // TODO: Enforce configuration
         return true;
       }
