@@ -77,8 +77,8 @@ var filePickerDirective = function(reader) {
       };
 
       // Set up dialogue
-      this.select = function(e) {
-        if (process(e, e.target.files) && $scope.modal)
+      this.select = function(e, files) {
+        if (process(e, files) && $scope.modal)
           that.close();
       };
       // Set up drop

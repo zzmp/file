@@ -16,12 +16,7 @@ angular.module('file')
         var area = scope.area === 'window' ? $window : el;
 
         area.on('dragover', dragOver);
-        area.on('drop', ctrl.select);
-
-        scope.$on('$destroy', function() {
-          area.off('dragover', dragOver);
-          area.off('drop', ctrl.select);
-        });
+        area.on('drop', function(e) { ctrl.select(e, e.dataTransfer.files); });
 
         function dragOver(e) {
           e.stopPropagation(); e.preventDefault();

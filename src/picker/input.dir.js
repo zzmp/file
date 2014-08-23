@@ -10,7 +10,7 @@ angular.module('file')
         return ['<input type="file" accept="', attrs.accept, '">'].join('');
       },
       link: function(scope, el, attrs, ctrl) {
-        el.on('change', ctrl.select);
+        el.on('change', function(e) { ctrl.select(e, e.target.files); });
       }
     };
   }])
