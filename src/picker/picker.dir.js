@@ -2,7 +2,7 @@ var filePickerDirective = function(reader) {
   return {
     transclude: false,
     restrict: 'E',
-    scope: {                 // ALLOWED VALUES                        | DEFAULT
+    scope: {               // ALLOWED VALUES                        | DEFAULT
       title        : '@?', // string                                | ''
       dialogue     : '@?', // boolean                               | true
       drop         : '@?', // '' (div only) or window               | false
