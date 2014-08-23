@@ -43,14 +43,16 @@ gulp.task('test', function() {
 
 // build dist
 gulp.task('build', function() {
+  // clean dist
+  sh.rm('-f', 'index.js', 'index.min.js');
+
   gulp.src(dependencies.concat(paths.preamble, paths.src, paths.postamble))
   // concatenate
     .pipe(concat('index.js'))
   // annotate dependency injections
     .pipe(annotate({ add: true, single_quotes: true }))
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('.'))
   // minify
-  gulp.src('./index.js')
     .pipe(concat('index.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('.'));
