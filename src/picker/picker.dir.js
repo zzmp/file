@@ -71,7 +71,7 @@ var filePickerDirective = function(reader) {
        * </div>                                                     */
     },
     controllerAs: 'filePicker',
-    controller: function($scope) {
+    controller: function($rootScope, $scope) {
       var that = this;
       var el;
 
@@ -80,18 +80,14 @@ var filePickerDirective = function(reader) {
         el = element;
       };
 
-      // Set up dialogue
-      this.select = function(e, files) {
-        if (process(e, files) && $scope.modal)
-          that.close();
-      };
-      // Set up drop
-      this.drop = function(e) {
-        if (process(e, e.dataTransfer.files) && $scope.modal)
-          that.close();
-      };
+      // Set up dialogue/drop
+      this.select = function(e, files) { process(e, files); };
+
       // Set up modality
       this.close = function() { el.remove(); };
+      var deregister = {};
+      deregister.cancel   = $rootScope.$on('file:picker:canceled', close);
+      deregister.complete = $rootScope.$on('file:reader:complete', close);
 
       function process(e, fileList) {
         e.stopPropagation(); e.preventDefault();
@@ -104,6 +100,12 @@ var filePickerDirective = function(reader) {
         reader.load(files);
         // TODO: Enforce configuration
         return true;
+      }
+
+      function close() {
+        that.close();
+        deregister.cancel();
+        deregister.complete();
       }
     },
     link: function(scope, el, attrs, ctrl) { ctrl.link(el); }
