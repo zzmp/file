@@ -32,7 +32,6 @@ var fileProvider = function() {
 
 
       picker.pick();
-      // TODO: Only deregister once all files are read (edge case: multiple files)
       // TODO: Emit this event
       deregister.cancel = $rootScope.$on('file:picker:canceled', fileCancel);
       deregister.receive = $rootScope.$on('file:reader:received', fileReceive);
