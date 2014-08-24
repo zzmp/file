@@ -8,7 +8,6 @@ var filePickerDirective = function(reader) {
       drop         : '@?', // '' (div only) or window               | false
       // TODO: multiple checking for dropped files
       multiple     : '@?', // boolean                               | false
-      // TODO
       progress     : '@?', // boolean                               | false
       // TODO: mime checking for dropped files
       mime         : '@?', // comma-separated list of allowed types | all
@@ -51,7 +50,7 @@ var filePickerDirective = function(reader) {
       /* TODO: if (attrs.integrations)
         input.push('<file-integrations include="' + attrs.integrations + '">'); */
       input.push('</span></div>');
-      var progress = typeof attrs.progress === 'string' ? '<div><file-progress></file-progress></div>' : '';
+      var progress = typeof attrs.progress === 'string' ? '<div><file-progress progress="progress"></file-progress></div>' : '';
 
       return [div.join(''), drop.join(''), input.join(''), progress, '</div>'].join('\n');
 
@@ -97,7 +96,7 @@ var filePickerDirective = function(reader) {
           files.push(file);
         });
 
-        reader.load(files);
+        $scope.progress = reader.load(files);
         // TODO: Enforce configuration
         return true;
       }
