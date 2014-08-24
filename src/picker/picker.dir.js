@@ -6,6 +6,8 @@ var filePickerDirective = function(reader) {
       title        : '@?', // string                                | ''
       dialogue     : '@?', // boolean                               | true
       drop         : '@?', // '' (div only) or window               | false
+      // TODO: multiple checking for dropped files
+      multiple     : '@?', // boolean                               | false
       // TODO
       progress     : '@?', // boolean                               | false
       // TODO: mime checking for dropped files
@@ -43,7 +45,9 @@ var filePickerDirective = function(reader) {
       if (attrs.logo)
         input.push('<img class="file-logo" src="' + attrs.logo + '">');
       if (attrs.dialogue !== 'false')
-        input.push(['<file-input accept="', attrs.mime, '"></file-input>'].join(''));
+        input.push(['<file-input accept="', attrs.mime, '" ',
+          typeof attrs.multiple === 'string' ? 'multiple' : '',
+          '></file-input>'].join(''));
       /* TODO: if (attrs.integrations)
         input.push('<file-integrations include="' + attrs.integrations + '">'); */
       input.push('</span></div>');
