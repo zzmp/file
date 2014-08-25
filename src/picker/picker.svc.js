@@ -5,10 +5,9 @@ angular.module('file')
     this.pick = function(options) {
       options = options || {};
       options.modal = true;
-      // FIXME: Check for property, not value
-      if (!options.dialogue)
+      if (!options.hasOwnProperty('dialogue'))
         options.dialogue = true;
-      if (!options.drop)
+      if (!options.hasOwnProperty('drop'))
         options.drop = '';
 
       var tEl = ['<file-picker'];
