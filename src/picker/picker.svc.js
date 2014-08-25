@@ -5,6 +5,7 @@ angular.module('file')
     this.pick = function(options) {
       options = options || {};
       options.modal = true;
+      // FIXME: Check for property, not value
       if (!options.dialogue)
         options.dialogue = true;
       if (!options.drop)

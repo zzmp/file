@@ -66,7 +66,6 @@ angular.module('file')
       });
 
       progress.loaded.progress = fraction;
-      console.log(fraction);
 
       if (progress.loaded.files + progress.loaded.erred === progress.total.files) {
         progress.state = FileReader.DONE;

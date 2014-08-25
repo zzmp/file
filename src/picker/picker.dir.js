@@ -33,9 +33,7 @@ var filePickerDirective = function(reader) {
   var scope = {
     dialogue     : '@?',
     drop         : '@?',
-    // TODO: multiple checking for dropped files
     multiple     : '@?',
-    // TODO: mime checking for dropped files
     mime         : '@?',
     // TODO: aspect checking
     aspect       : '@?',
@@ -54,7 +52,7 @@ var filePickerDirective = function(reader) {
     scope: scope,
     template/* (compile) */: template,
     controllerAs: 'filePicker',
-    controller: ['$rootScope', '$scope', controller],
+    controller: ['$rootScope', '$scope', '$window', controller],
     link: link
   };
 
@@ -67,24 +65,30 @@ var filePickerDirective = function(reader) {
     });
 
     // Enforce image types if aspect is specified
+    attrs.mime = attrs.mime || '';
     if (attrs.aspect && (!attrs.mime || ~attrs.mime.indexOf('image')))
       attrs.mime = 'image/*';
+
+    var multiple = attrs.multiple !== 'false' ? 'multiple' : '';
 
     var root = ['<div class="', classes.join(' '), '">'];
     var cRoot = ['</div>'];
     var title = attrs.title ?
       ['<div class="file-title">', attrs.title, '</div>'] :
       [];
-    var drop  = attrs.drop !== 'false' ?
-      ['<file-drop area="', attrs.drop, '"></file-drop>'] :
-      [];
     var input = ['<div><span>'];
+    if (attrs.drop !== 'false')
+      input.push(['<file-drop',
+        'area="' + attrs.drop + '"',
+        'accept="' + attrs.mime + '"',
+        multiple,
+        '></file-drop>'].join(' '));
     if (attrs.logo)
       input.push('<img class="file-logo" src="' + attrs.logo + '">');
     if (attrs.dialogue !== 'false')
       input.push(['<file-input',
         'accept="' + attrs.mime + '"',
-        attrs.multiple !== 'false' ? 'multiple' : '',
+        multiple,
         '></file-input>'].join(' '));
     /* TODO: if (attrs.integrations)
       input.push('<file-integrations include="' + attrs.integrations + '">'); */
@@ -93,11 +97,11 @@ var filePickerDirective = function(reader) {
       ['<file-progress progress="progress"></file-progress>'] :
       [];
 
-    return [root, title, drop, input, cRoot].map(function(el) {
+    return [root, title, input, cRoot].map(function(el) {
       return el.join('');
     }).join('');
   }
-  function controller($rootScope, $scope) {
+  function controller($rootScope, $scope, $window) {
     var that = this;
     var el;
 
@@ -105,6 +109,9 @@ var filePickerDirective = function(reader) {
     this.link = function(element) {
       el = element;
     };
+
+    // Expose $window to element
+    this.window = $window;
 
     // Set up dialogue/drop
     this.select = function(e, files) { process(e, files); };

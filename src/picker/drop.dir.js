@@ -4,7 +4,9 @@ angular.module('file')
       require: '^filePicker',
       restrict: 'E',
       scope: {
-        area: '&'
+        area: '&',
+        accept: '&',
+        multiple: '&?'
       },
       template: function(el, attrs) {
         if (attrs.area === 'window') {
@@ -13,13 +15,46 @@ angular.module('file')
           return '<div class="file-drop-div">Drag files here...</div>';
       },
       link: function(scope, el, attrs, ctrl) {
-        var area = scope.area === 'window' ? $window : el;
+        var area = attrs.area === 'window' ? ctrl.window : el;
 
         area.on('dragover', dragOver);
-        area.on('drop', function(e) { ctrl.select(e, e.dataTransfer.files); });
+        area.on('drop', function(e) {
+          e.stopPropagation(); e.preventDefault();
+
+          // Check for multiple files
+          if (!attrs.hasOwnProperty('multiple') &&
+              e.dataTransfer.files.length > 1)
+            return;
+
+          // Check for mime types
+          var mimecheck = attrs.accept === '' ? /.*/ :
+            new RegExp('[' + attrs.accept.split(' ').join('|') + ']');
+          var error =
+            'Only ' +
+            attrs.accept.split(' ').map(function(type) {
+              return type.split('/')[0];
+            }).join(', ') +
+            ' files may be uploaded.';
+          var erred = false;
+          Array.prototype.forEach.call(e.dataTransfer.files, function(file) {
+            if (!erred && !file.type.match(mimecheck)) {
+              erred = true;
+              ctrl.window.alert(error);
+            }
+          });
+          if (erred)
+            return;
+
+          ctrl.select(e, e.dataTransfer.files);
+        });
 
         function dragOver(e) {
           e.stopPropagation(); e.preventDefault();
+
+          // Check for multiple files
+          if (!attrs.hasOwnProperty('multiple') &&
+              e.dataTransfer.items.length > 1)
+            return;
 
           e.dataTransfer.dropEffect = 'copy';
         }
