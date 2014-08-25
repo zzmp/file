@@ -15,7 +15,7 @@ angular.module('file')
           return '<div class="file-drop-div">Drag files here...</div>';
       },
       link: function(scope, el, attrs, ctrl) {
-        var area = attrs.area === 'window' ? ctrl.window : el;
+        var area = attrs.area === 'window' ? ctrl.window : el.children();
 
         area.on('dragover', dragOver);
         area.on('drop', function(e) {
@@ -28,7 +28,13 @@ angular.module('file')
 
           // Check for mime types
           var mimecheck = attrs.accept === '' ? /.*/ :
-            new RegExp('[' + attrs.accept.split(' ').join('|') + ']');
+            new RegExp(
+              attrs
+                .accept
+                .replace(/\/\*/g, '')
+                .split(' ')
+                .map(function(mime) { return '(' + mime + ')'; })
+                .join('|'));
           var error =
             'Only ' +
             attrs.accept.split(' ').map(function(type) {
