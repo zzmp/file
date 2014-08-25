@@ -6,7 +6,7 @@ var fileProvider = function() {
   this.$get = function($rootScope, $q, picker) {
     return { pick: pick };
 
-    function pick() {
+    function pick(options) {
       var files = $q.defer();
       var deregister = {};
 
@@ -31,7 +31,7 @@ var fileProvider = function() {
       };
 
 
-      picker.pick();
+      picker.pick(options);
       // TODO: Emit this event
       deregister.cancel = $rootScope.$on('file:picker:canceled', fileCancel);
       deregister.receive = $rootScope.$on('file:reader:received', fileReceive);
